@@ -1,0 +1,629 @@
+/* ==========================================================================
+   PASSWORD STRENGTH ANALYZER — STYLESHEET
+   Theme: Dark Cybersecurity Dashboard (Blue + Cyan + Green accents)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------
+   1. CSS VARIABLES / THEME TOKENS
+   -------------------------------------------------------------------- */
+:root {
+  /* Base colors */
+  --bg-primary: #060b16;
+  --bg-secondary: #0a1120;
+  --glass-bg: rgba(18, 28, 48, 0.55);
+  --glass-border: rgba(120, 180, 255, 0.15);
+
+  /* Accent palette */
+  --accent-blue: #3b82f6;
+  --accent-cyan: #22d3ee;
+  --accent-green: #22c55e;
+  --accent-red: #ef4444;
+  --accent-orange: #f59e0b;
+  --accent-yellow: #eab308;
+
+  /* Text */
+  --text-primary: #eaf2ff;
+  --text-secondary: #93a4c3;
+  --text-muted: #5f7196;
+
+  /* Strength colors (updated dynamically via JS through classes) */
+  --strength-color: var(--accent-red);
+
+  /* Shadows */
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.45);
+  --shadow-glow-cyan: 0 0 25px rgba(34, 211, 238, 0.25);
+
+  /* Radii */
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 8px;
+
+  /* Fonts */
+  --font-heading: 'Orbitron', sans-serif;
+  --font-body: 'Rubik', sans-serif;
+
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-mid: 0.4s ease;
+  --transition-slow: 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* --------------------------------------------------------------------
+   2. RESET & BASE
+   -------------------------------------------------------------------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  line-height: 1.5;
+}
+
+/* Background grid pattern */
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(59, 130, 246, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.06) 1px, transparent 1px);
+  background-size: 42px 42px;
+  z-index: -2;
+  pointer-events: none;
+}
+
+/* Ambient glow blobs */
+.glow {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(120px);
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.35;
+}
+.glow-1 {
+  width: 500px;
+  height: 500px;
+  background: var(--accent-blue);
+  top: -150px;
+  left: -150px;
+}
+.glow-2 {
+  width: 450px;
+  height: 450px;
+  background: var(--accent-green);
+  bottom: -150px;
+  right: -150px;
+}
+
+/* --------------------------------------------------------------------
+   3. LAYOUT
+   -------------------------------------------------------------------- */
+.container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 48px 24px 60px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 42px;
+}
+
+.logo-badge {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(34,211,238,0.2));
+  border: 1px solid var(--glass-border);
+  color: var(--accent-cyan);
+  box-shadow: var(--shadow-glow-cyan);
+}
+
+.header h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: 1px;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue), var(--accent-green));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.subtitle {
+  margin-top: 10px;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  font-weight: 300;
+}
+
+/* Main responsive grid */
+.main-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 24px;
+}
+
+.input-card { grid-column: 1; grid-row: 1; }
+.score-card { grid-column: 2; grid-row: 1 / span 2; }
+.rules-card { grid-column: 1; grid-row: 2; }
+.suggestions-card { grid-column: 1 / span 2; grid-row: 3; }
+
+/* --------------------------------------------------------------------
+   4. GLASSMORPHISM CARD
+   -------------------------------------------------------------------- */
+.card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: var(--shadow-soft);
+  transition: transform var(--transition-mid), box-shadow var(--transition-mid), border-color var(--transition-mid);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(120, 180, 255, 0.3);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.55);
+}
+
+.card-title {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  margin-bottom: 20px;
+  color: var(--accent-cyan);
+}
+
+/* --------------------------------------------------------------------
+   5. PASSWORD INPUT
+   -------------------------------------------------------------------- */
+.field-label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+#passwordInput {
+  width: 100%;
+  padding: 15px 50px 15px 18px;
+  background: rgba(6, 12, 24, 0.6);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-family: var(--font-body);
+  letter-spacing: 1px;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+#passwordInput::placeholder {
+  color: var(--text-muted);
+  letter-spacing: normal;
+}
+
+#passwordInput:focus {
+  outline: none;
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.15);
+}
+
+.icon-btn {
+  position: absolute;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.icon-btn:hover {
+  color: var(--accent-cyan);
+  background: rgba(34, 211, 238, 0.1);
+}
+
+/* --------------------------------------------------------------------
+   6. STRENGTH METER
+   -------------------------------------------------------------------- */
+.meter-section {
+  margin-top: 26px;
+}
+
+.meter-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+
+.meter-label {
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.78rem;
+}
+
+.meter-value {
+  font-weight: 600;
+  color: var(--strength-color);
+  transition: color var(--transition-mid);
+}
+
+.progress-track {
+  width: 100%;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 20px;
+  background: var(--strength-color);
+  transition: width var(--transition-slow), background var(--transition-mid);
+  box-shadow: 0 0 12px var(--strength-color);
+}
+
+/* --------------------------------------------------------------------
+   7. BUTTONS
+   -------------------------------------------------------------------- */
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 26px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 18px;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast);
+  white-space: nowrap;
+}
+
+.btn:active {
+  transform: scale(0.96);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+  color: #041018;
+  font-weight: 600;
+  flex: 1 1 auto;
+}
+.btn-primary:hover {
+  box-shadow: 0 0 20px rgba(34, 211, 238, 0.45);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: rgba(34, 197, 94, 0.12);
+  border-color: rgba(34, 197, 94, 0.35);
+  color: var(--accent-green);
+}
+.btn-secondary:hover {
+  background: rgba(34, 197, 94, 0.22);
+  box-shadow: 0 0 16px rgba(34, 197, 94, 0.25);
+  transform: translateY(-2px);
+}
+
+.btn-ghost {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--glass-border);
+  color: var(--text-secondary);
+}
+.btn-ghost:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: var(--accent-red);
+  transform: translateY(-2px);
+}
+
+.copy-toast {
+  margin-top: 14px;
+  font-size: 0.85rem;
+  color: var(--accent-green);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity var(--transition-mid), transform var(--transition-mid);
+}
+
+.copy-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --------------------------------------------------------------------
+   8. SCORE CARD (Ring)
+   -------------------------------------------------------------------- */
+.score-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.score-ring-wrap {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  margin: 10px auto 20px;
+}
+
+.score-ring {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.ring-bg {
+  fill: none;
+  stroke: rgba(255,255,255,0.07);
+  stroke-width: 10;
+}
+
+.ring-progress {
+  fill: none;
+  stroke: var(--strength-color);
+  stroke-width: 10;
+  stroke-linecap: round;
+  stroke-dasharray: 377;
+  stroke-dashoffset: 377;
+  transition: stroke-dashoffset var(--transition-slow), stroke var(--transition-mid);
+  filter: drop-shadow(0 0 6px var(--strength-color));
+}
+
+.score-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.score-number {
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.score-max {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.rating-badge {
+  display: inline-block;
+  padding: 8px 20px;
+  border-radius: 30px;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: var(--accent-red);
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  margin-bottom: 26px;
+  transition: all var(--transition-mid);
+}
+
+.crack-time-box {
+  width: 100%;
+  background: rgba(0,0,0,0.25);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.crack-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.crack-value {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  color: var(--accent-cyan);
+  font-weight: 500;
+}
+
+/* --------------------------------------------------------------------
+   9. RULES CHECKLIST
+   -------------------------------------------------------------------- */
+.rules-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rule-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.02);
+  border: 1px solid transparent;
+  transition: all var(--transition-fast);
+}
+
+.rule-icon {
+  width: 22px;
+  height: 22px;
+  min-width: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--accent-red);
+  transition: all var(--transition-fast);
+}
+
+.rule-item.valid {
+  color: var(--text-primary);
+  background: rgba(34, 197, 94, 0.06);
+  border-color: rgba(34, 197, 94, 0.2);
+}
+
+.rule-item.valid .rule-icon {
+  background: rgba(34, 197, 94, 0.18);
+  color: var(--accent-green);
+}
+
+/* --------------------------------------------------------------------
+   10. SUGGESTIONS
+   -------------------------------------------------------------------- */
+.suggestions-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.suggestions-list li {
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  color: var(--accent-orange);
+  padding: 10px 16px;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: fadeIn 0.5s ease;
+}
+
+.suggestions-list li.good {
+  background: rgba(34, 197, 94, 0.08);
+  border-color: rgba(34, 197, 94, 0.25);
+  color: var(--accent-green);
+}
+
+/* --------------------------------------------------------------------
+   11. FOOTER
+   -------------------------------------------------------------------- */
+.footer {
+  text-align: center;
+  margin-top: 40px;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+/* --------------------------------------------------------------------
+   12. ANIMATIONS
+   -------------------------------------------------------------------- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease forwards;
+}
+
+.shake {
+  animation: shake 0.4s;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+/* --------------------------------------------------------------------
+   13. STRENGTH COLOR CLASSES (applied via JS to :root or elements)
+   -------------------------------------------------------------------- */
+.very-weak   { --strength-color: #ef4444; }
+.weak        { --strength-color: #f59e0b; }
+.medium      { --strength-color: #eab308; }
+.strong      { --strength-color: #22c55e; }
+.very-strong { --strength-color: #22d3ee; }
+
+/* --------------------------------------------------------------------
+   14. RESPONSIVE DESIGN
+   -------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .main-grid {
+    grid-template-columns: 1fr;
+  }
+  .input-card { grid-column: 1; grid-row: 1; }
+  .score-card { grid-column: 1; grid-row: 2; }
+  .rules-card { grid-column: 1; grid-row: 3; }
+  .suggestions-card { grid-column: 1; grid-row: 4; }
+}
+
+@media (max-width: 520px) {
+  .container {
+    padding: 32px 16px 40px;
+  }
+  .card {
+    padding: 20px;
+  }
+  .btn-row {
+    flex-direction: column;
+  }
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

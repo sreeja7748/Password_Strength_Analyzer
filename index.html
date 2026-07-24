@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Password Strength Analyzer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Background grid / glow effects -->
+  <div class="bg-grid"></div>
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+
+  <div class="container">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="logo-badge">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <path d="M9 12l2 2 4-4"/>
+        </svg>
+      </div>
+      <h1>Password Strength Analyzer</h1>
+      <p class="subtitle">Analyze your password security instantly.</p>
+    </header>
+
+    <main class="main-grid">
+
+      <!-- LEFT COLUMN : Input + Meter + Score -->
+      <section class="card input-card fade-in">
+
+        <label class="field-label" for="passwordInput">Enter Password</label>
+
+        <div class="input-wrapper">
+          <input type="password" id="passwordInput" placeholder="Type your password..." autocomplete="off" spellcheck="false">
+          <button class="icon-btn" id="toggleVisibility" title="Show / Hide Password" type="button">
+            <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Strength Meter -->
+        <div class="meter-section">
+          <div class="meter-top">
+            <span class="meter-label">Strength</span>
+            <span class="meter-value" id="strengthText">—</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="btn-row">
+          <button class="btn btn-primary" id="generateBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+            Generate Secure Password
+          </button>
+          <button class="btn btn-secondary" id="copyBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy Password
+          </button>
+          <button class="btn btn-ghost" id="resetBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+            Reset
+          </button>
+        </div>
+
+        <p class="copy-toast" id="copyToast">Copied Successfully</p>
+
+      </section>
+
+      <!-- RIGHT COLUMN : Score + Crack time -->
+      <section class="card score-card fade-in">
+        <h2 class="card-title">Security Score</h2>
+
+        <div class="score-ring-wrap">
+          <svg class="score-ring" viewBox="0 0 140 140">
+            <circle class="ring-bg" cx="70" cy="70" r="60"></circle>
+            <circle class="ring-progress" id="ringProgress" cx="70" cy="70" r="60"></circle>
+          </svg>
+          <div class="score-center">
+            <span class="score-number" id="scoreNumber">0</span>
+            <span class="score-max">/ 100</span>
+          </div>
+        </div>
+
+        <div class="rating-badge" id="ratingBadge">No Password</div>
+
+        <div class="crack-time-box">
+          <span class="crack-label">Estimated Crack Time</span>
+          <span class="crack-value" id="crackTime">—</span>
+        </div>
+      </section>
+
+      <!-- RULES CHECKLIST -->
+      <section class="card rules-card fade-in">
+        <h2 class="card-title">Live Analysis</h2>
+        <ul class="rules-list" id="rulesList">
+          <li class="rule-item" data-rule="length">
+            <span class="rule-icon">✕</span>
+            <span class="rule-text">Minimum 8 Characters Length</span>
+          </li>
+          <li class="rule-item" data-rule="uppercase">
+            <span class="rule-icon">✕</span>
+            <span class="rule-text">Contains Uppercase Letter (A-Z)</span>
+          </li>
+          <li class="rule-item" data-rule="lowercase">
+            <span class="rule-icon">✕</span>
+            <span class="rule-text">Contains Lowercase Letter (a-z)</span>
+          </li>
+          <li class="rule-item" data-rule="number">
+            <span class="rule-icon">✕</span>
+            <span class="rule-text">Contains Number (0-9)</span>
+          </li>
+          <li class="rule-item" data-rule="special">
+            <span class="rule-icon">✕</span>
+            <span class="rule-text">Contains Special Character (!@#$...)</span>
+          </li>
+          <li class="rule-item" data-rule="space">
+            <span class="rule-icon">✕</span>
+            <span class="rule-text">No Spaces</span>
+          </li>
+        </ul>
+      </section>
+
+      <!-- SUGGESTIONS -->
+      <section class="card suggestions-card fade-in" id="suggestionsCard">
+        <h2 class="card-title">Password Suggestions</h2>
+        <ul class="suggestions-list" id="suggestionsList">
+          <li>Start typing a password to see suggestions.</li>
+        </ul>
+      </section>
+
+    </main>
+
+    <footer class="footer">
+      <p>Build your password.Secure your System.</p>
+    </footer>
+
+  </div>
+
+<script src="script.js"></script>
+</body>
+</html>
