@@ -26,3 +26,16 @@ The project is designed to promote better password hygiene and cybersecurity awa
 - JavaScript
 
 ---
+
+## 📂 Project Structure
+
+```
+Password_Strength_Analyzer/
+│
+├── index.html
+├── style.css
+├── script.js
+└── README.md
+```
+
+---
