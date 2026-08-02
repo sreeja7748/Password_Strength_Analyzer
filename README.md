@@ -18,3 +18,11 @@ The project is designed to promote better password hygiene and cybersecurity awa
 - 📱 Responsive and user-friendly interface
 
 ---
+
+## 🛠️ Technologies Used
+
+- HTML5
+- CSS3
+- JavaScript
+
+---
