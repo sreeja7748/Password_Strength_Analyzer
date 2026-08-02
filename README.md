@@ -39,3 +39,23 @@ Password_Strength_Analyzer/
 ```
 
 ---
+
+## 🚀 Getting Started
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/your-username/Password_Strength_Analyzer.git
+```
+
+2. Navigate to the project folder:
+
+```bash
+cd Password_Strength_Analyzer
+```
+
+3. Open **index.html** in your preferred web browser.
+
+No installation or additional dependencies are required.
+
+---
