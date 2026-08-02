@@ -59,3 +59,17 @@ cd Password_Strength_Analyzer
 No installation or additional dependencies are required.
 
 ---
+
+## 🔐 How It Works
+
+The analyzer evaluates a password based on common security criteria, including:
+
+- Minimum length
+- Uppercase letters
+- Lowercase letters
+- Numbers
+- Special characters
+
+It then calculates an overall strength score and displays recommendations to improve password security.
+
+---
