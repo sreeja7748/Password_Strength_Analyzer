@@ -121,3 +121,7 @@ git push origin feature-name
 This project is open-source and intended for educational purposes. Feel free to use, modify, and improve it.
 
 ---
+
+## 👩‍💻 Author
+
+Developed as a cybersecurity-focused project to encourage strong password practices and improve awareness of password security.
