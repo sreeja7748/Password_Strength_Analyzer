@@ -73,3 +73,17 @@ The analyzer evaluates a password based on common security criteria, including:
 It then calculates an overall strength score and displays recommendations to improve password security.
 
 ---
+
+
+
+## 🎯 Future Enhancements
+
+- Password entropy calculation
+- Estimated crack time
+- Dark mode support
+- Password breach detection using public APIs
+- Password generator
+- Copy-to-clipboard functionality
+- Accessibility improvements
+
+---
