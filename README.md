@@ -5,3 +5,16 @@
 The project is designed to promote better password hygiene and cybersecurity awareness through an intuitive and interactive interface.
 
 ---
+
+## ✨ Features
+
+- 🔍 Real-time password strength analysis
+- 📊 Strength indicator (Weak, Medium, Strong)
+- 🔢 Checks password length
+- 🔠 Detects uppercase and lowercase characters
+- 🔢 Verifies numeric digits
+- 🔣 Detects special characters
+- 💡 Provides suggestions for stronger passwords
+- 📱 Responsive and user-friendly interface
+
+---
