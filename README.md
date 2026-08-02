@@ -40,6 +40,14 @@ Password_Strength_Analyzer/
 
 ---
 
+## 📸 Project Screenshots
+<img width="1907" height="1007" alt="Screenshot (317)" src="https://github.com/user-attachments/assets/42db9a9f-783c-42ac-bf33-de303e2b5819" />
+<img width="1889" height="1021" alt="Screenshot (318)" src="https://github.com/user-attachments/assets/8bd5a506-858a-4892-b9c5-374f2b26e799" />
+<img width="1920" height="1022" alt="Screenshot (319)" src="https://github.com/user-attachments/assets/efbdbe76-b6fc-415e-a844-2c94049cb421" />
+<img width="1904" height="1011" alt="Screenshot (320)" src="https://github.com/user-attachments/assets/6e06ac66-569f-4fd1-8083-342821d856fd" />
+
+---
+
 ## 🚀 Getting Started
 
 1. Clone the repository:
