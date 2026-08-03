@@ -130,6 +130,10 @@ This project is open-source and intended for educational purposes. Feel free to 
 
 ---
 
-## 👩‍💻 Author
+## 👨‍💻 Author
 
-Developed as a cybersecurity-focused project to encourage strong password practices and improve awareness of password security.
+**Sreeja Dey**
+
+Computer Science & Engineering Student
+
+**GitHub:** https://github.com/sreeja7748
